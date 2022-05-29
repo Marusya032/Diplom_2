@@ -1,5 +1,4 @@
 import io.qameta.allure.Step;
-import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
 import static io.restassured.RestAssured.given;
 
@@ -34,6 +33,18 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .delete(EDIT_USER_PATH)
                 .then();
     }
+
+    @Step("Login user")
+    public ValidatableResponse loginUser(UserCredentials user) {
+
+        return given()
+                .spec(getBaseSpec())
+                .body(user)
+                .when()
+                .post(LOGIN_USER_PATH)
+                .then();
+    }
+
 
     }
 
