@@ -14,7 +14,7 @@ public class LoginUserTest {
     User user;
     UserCredentials userCredentials;
     StellarburgersClient stellarburgersClient;
-    String autorization;
+    String authorization;
     String email;
 
 
@@ -27,10 +27,10 @@ public class LoginUserTest {
 
     @After
     public void TearDown() {
-        if (autorization != null) {
+        if (authorization != null) {
 
 
-            stellarburgersClient.deleteUser(autorization);
+            stellarburgersClient.deleteUser(authorization);
         }}
 
     @Test
@@ -41,7 +41,7 @@ public class LoginUserTest {
 
         int statusCode = loginResponse.extract().statusCode();
         boolean errorStatus = loginResponse.extract().body().path("success");
-        autorization = loginResponse.extract().body().path("accessToken");
+        authorization = loginResponse.extract().body().path("accessToken");
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_OK));
         assertThat("Неверный статус ответа", errorStatus, equalTo(true));

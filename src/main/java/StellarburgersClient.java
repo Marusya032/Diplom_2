@@ -45,6 +45,30 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .then();
     }
 
+    @Step("Edit user with authorization")
+    public ValidatableResponse editUserWithAuthorization(User user, String authorization) {
+
+        return given()
+                .spec(getBaseSpec())
+                .header("Authorization", authorization)
+                .body(user)
+                .when()
+                .patch(EDIT_USER_PATH)
+                .then();
+    }
+
+    @Step("Edit user without authorization")
+    public ValidatableResponse editUserWithoutAuthorization(User user) {
+
+        return given()
+                .spec(getBaseSpec())
+
+                .body(user)
+                .when()
+                .patch(EDIT_USER_PATH)
+                .then();
+    }
+
 
     }
 

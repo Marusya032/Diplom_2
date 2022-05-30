@@ -12,7 +12,7 @@ import static org.hamcrest.Matchers.equalTo;
 public class CreateUserTest {
     User user;
     StellarburgersClient stellarburgersClient;
-    String autorization;
+    String authorization;
     String email;
 
 
@@ -25,10 +25,10 @@ public class CreateUserTest {
 
     @After
     public void TearDown() {
-        if (autorization != null) {
+        if (authorization != null) {
 
 
-          stellarburgersClient.deleteUser(autorization);
+          stellarburgersClient.deleteUser(authorization);
     }}
 
     @Test
@@ -39,7 +39,7 @@ public class CreateUserTest {
 
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
-        autorization = createResponse.extract().body().path("accessToken");
+        authorization = createResponse.extract().body().path("accessToken");
         assertThat("Неверный код ответа", statusCode, equalTo(SC_OK));
         assertThat("Неверный статус ответа", errorStatus, equalTo(true));
 
