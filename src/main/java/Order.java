@@ -1,10 +1,7 @@
 import io.restassured.response.ValidatableResponse;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class Order {
-
     private String bun;
     private String souse;
     private String main;
@@ -39,7 +36,7 @@ public class Order {
         this.main = main;
     }
     public static Order generateOrder() {
-        StellarburgersClient stellarburgersClient = new StellarburgersClient();
+        StellarBurgersClient stellarburgersClient = new StellarBurgersClient();
         ValidatableResponse getIngredients = stellarburgersClient.getIngredients();
 
         ArrayList<String> bunList = getIngredients.extract().body().path("data.findAll { it.type == \"bun\"}._id");
@@ -49,7 +46,6 @@ public class Order {
         int bunIndex = (int) (Math.random() * bunList.size());
         int sauceIndex = (int) (Math.random() * sauceList.size());
         int mainIndex = (int) (Math.random() * mainList.size());
-
 
         Order order = new Order(bunList.get(bunIndex),
                 sauceList.get(sauceIndex),

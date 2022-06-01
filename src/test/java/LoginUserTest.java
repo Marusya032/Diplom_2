@@ -13,16 +13,16 @@ public class LoginUserTest {
 
     User user;
     UserCredentials userCredentials;
-    StellarburgersClient stellarburgersClient;
+    StellarBurgersClient stellarBurgersClient;
     String authorization;
     String email;
 
 
     @Before
     public void setUp() {
-        stellarburgersClient = new StellarburgersClient();
+        stellarBurgersClient = new StellarBurgersClient();
         user  = user.getRandom();
-        stellarburgersClient.createNewUser(user);
+        stellarBurgersClient.createNewUser(user);
     }
 
     @After
@@ -30,14 +30,14 @@ public class LoginUserTest {
         if (authorization != null) {
 
 
-            stellarburgersClient.deleteUser(authorization);
+            stellarBurgersClient.deleteUser(authorization);
         }}
 
     @Test
     @DisplayName("Test user can be login")
     public void userCanBeLogin(){
 
-        ValidatableResponse loginResponse = stellarburgersClient.loginUser(new UserCredentials(user.getEmail(), user.getPassword()));
+        ValidatableResponse loginResponse = stellarBurgersClient.loginUser(new UserCredentials(user.getEmail(), user.getPassword()));
 
         int statusCode = loginResponse.extract().statusCode();
         boolean errorStatus = loginResponse.extract().body().path("success");
@@ -51,7 +51,7 @@ public class LoginUserTest {
     @Test
     @DisplayName("Login with incorrect email")
     public void loginWithIncorrectEmail(){
-        ValidatableResponse loginResponse = stellarburgersClient.loginUser(new UserCredentials("test_qajava5@mail.ru", user.getPassword()));
+        ValidatableResponse loginResponse = stellarBurgersClient.loginUser(new UserCredentials("test_qajava5@mail.ru", user.getPassword()));
 
         int statusCode = loginResponse.extract().statusCode();
         boolean errorStatus = loginResponse.extract().body().path("success");
@@ -66,7 +66,7 @@ public class LoginUserTest {
     @DisplayName("Login with incorrect password")
     public void loginWithIncorrectPassword(){
 
-        ValidatableResponse loginResponse = stellarburgersClient.loginUser(new UserCredentials(user.getEmail(), "555555"));
+        ValidatableResponse loginResponse = stellarBurgersClient.loginUser(new UserCredentials(user.getEmail(), "555555"));
 
         int statusCode = loginResponse.extract().statusCode();
         boolean errorStatus = loginResponse.extract().body().path("success");

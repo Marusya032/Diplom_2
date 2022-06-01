@@ -1,21 +1,17 @@
 import io.qameta.allure.Step;
 import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
-
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
-
 import static io.restassured.RestAssured.given;
 
-public class StellarburgersClient extends StellarburgersRestClient{
+public class StellarBurgersClient extends StellarBurgersRestClient{
 
     private static final String CREATE_USER_PATH = "api/auth/register";
     private static final String ORDER_PATH = "api/orders";
     private static final String INGREDIENTS_LIST = "api/ingredients";
     private static final String LOGIN_USER_PATH = "api/auth/login/";
     private static final String EDIT_USER_PATH = "api/auth/user/";
-
 
     @Step("Create new user")
     public ValidatableResponse createNewUser(User user) {
@@ -27,7 +23,6 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .post(CREATE_USER_PATH)
                 .then();
     }
-
 
     @Step("Delete user")
     public ValidatableResponse deleteUser(String authorization){
@@ -75,7 +70,6 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .then();
     }
 
-
     @Step("Get ingredients list")
     public ValidatableResponse getIngredients() {
         return given()
@@ -85,19 +79,14 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .then();
     }
 
-
-
     @Step("Create order with authorization")
     public ValidatableResponse createOrderWithAuthorization(Order order, String authorization) {
 
-
         HashMap<String,Object> dataBody = new HashMap<String,Object>();
         ArrayList<String> ingredients = new ArrayList<String>();
-ingredients.add(order.getBun());
-ingredients.add(order.getSouse());
-ingredients.add(order.getBun());
-
-
+        ingredients.add(order.getBun());
+        ingredients.add(order.getSouse());
+        ingredients.add(order.getBun());
         dataBody.put("ingredients", ingredients);
 
         return given()
@@ -110,23 +99,18 @@ ingredients.add(order.getBun());
                 .then();
     }
 
-
  @Step("Create order without authorization")
     public ValidatableResponse createOrderWithoutAuthorization(Order order) {
-
 
         HashMap<String,Object> dataBody = new HashMap<String,Object>();
         ArrayList<String> ingredients = new ArrayList<String>();
         ingredients.add(order.getBun());
         ingredients.add(order.getSouse());
         ingredients.add(order.getBun());
-
-
         dataBody.put("ingredients", ingredients);
 
         return given()
                 .spec(getBaseSpec())
-
                 .contentType(ContentType.JSON)
                 .body(dataBody)
                 .when()
@@ -137,15 +121,12 @@ ingredients.add(order.getBun());
     @Step("Create order without authorization")
     public ValidatableResponse createOrderWithoutIngredients(Order order) {
 
-
         HashMap<String,Object> dataBody = new HashMap<String,Object>();
         ArrayList<String> ingredients = new ArrayList<String>();
-
         dataBody.put("ingredients", ingredients);
 
         return given()
                 .spec(getBaseSpec())
-
                 .contentType(ContentType.JSON)
                 .body(dataBody)
                 .when()
@@ -156,12 +137,10 @@ ingredients.add(order.getBun());
     @Step("Get Orders Authorized User")
     public ValidatableResponse getOrdersAuthorizedUser(User user, String authorization) {
 
-
         return given()
                 .spec(getBaseSpec())
                 .header("authorization", authorization)
                 .contentType(ContentType.JSON)
-
                 .when()
                 .get(ORDER_PATH)
                 .then();
@@ -169,15 +148,12 @@ ingredients.add(order.getBun());
     @Step("Get Orders Unauthorized User")
     public ValidatableResponse getOrdersUnauthorizedUser() {
 
-
         return given()
                 .spec(getBaseSpec())
                 .when()
                 .get(ORDER_PATH)
                 .then();
     }
-
-
     }
 
 

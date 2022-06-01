@@ -1,5 +1,4 @@
 public class UserCredentials {
-
         private String email;
         private String password;
 
@@ -23,6 +22,5 @@ public class UserCredentials {
         public void setPassword(String password) {
             this.password = password;
         }
-
 
     }

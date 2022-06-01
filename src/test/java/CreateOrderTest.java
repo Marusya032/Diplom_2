@@ -11,11 +11,9 @@ import static org.hamcrest.MatcherAssert.assertThat;
 import static org.hamcrest.Matchers.equalTo;
 
 public class CreateOrderTest {
-
     User user ;
     Order order;
-    StellarburgersClient stellarburgersClient;
-
+    StellarBurgersClient stellarBurgersClient;
     String authorization;
 
     @Before
@@ -26,34 +24,16 @@ public class CreateOrderTest {
     @After
     public void tearDown() {
         if (authorization != null) {
-            stellarburgersClient.deleteUser(authorization);
+            stellarBurgersClient.deleteUser(authorization);
         }
     }
     
-//    @Test
-//    public void getIngredients(){
-//
-//        StellarburgersClient stellarburgersClient = new StellarburgersClient();
-//        ValidatableResponse ingredients = stellarburgersClient.getIngredients();
-//        int statusCode = ingredients.extract().statusCode();
-//        String ingr = ingredients.extract().body().path("data._id");
-//
-//        System.out.println(ingr.toString());
-//
-//        assertThat("Неверный код ответа", statusCode, equalTo(SC_OK));
-//
-//
-//    }
-
     @Test
     public void createOrderWithAuthorization(){
-     //   order = order.generateOrder();
-
-        stellarburgersClient = new StellarburgersClient();
+        stellarBurgersClient = new StellarBurgersClient();
         user  =  user.getRandom();
 
-
-        StellarburgersClient stellarburgersClient = new StellarburgersClient();
+        StellarBurgersClient stellarburgersClient = new StellarBurgersClient();
         ValidatableResponse orderResponse = stellarburgersClient.createNewUser(user);
         authorization = orderResponse.extract().body().path("accessToken");
 
@@ -68,11 +48,9 @@ public class CreateOrderTest {
 
     @Test
     public void createOrderWithoutAuthorization(){
-     //   order = order.generateOrder();
+        stellarBurgersClient = new StellarBurgersClient();
 
-        stellarburgersClient = new StellarburgersClient();
-
-        ValidatableResponse orderResponse  = stellarburgersClient.createOrderWithoutAuthorization(order);
+        ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutAuthorization(order);
 
         int statusCode = orderResponse.extract().statusCode();
         boolean errorStatus = orderResponse.extract().body().path("success");
@@ -81,13 +59,11 @@ public class CreateOrderTest {
         assertThat("Неверный статус ответа", errorStatus, equalTo(true));
     }
 
-
     @Test
     public void createOrderWithoutIngredients(){
-     //   order = order.generateOrder();
-        stellarburgersClient = new StellarburgersClient();
+        stellarBurgersClient = new StellarBurgersClient();
 
-        ValidatableResponse orderResponse  = stellarburgersClient.createOrderWithoutIngredients(order);
+        ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutIngredients(order);
 
         int statusCode = orderResponse.extract().statusCode();
         boolean errorStatus = orderResponse.extract().body().path("success");
@@ -96,20 +72,15 @@ public class CreateOrderTest {
         assertThat("Неверный код ответа", statusCode, equalTo(SC_BAD_REQUEST));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
         assertThat("Неверный текст сообщения", message, equalTo("Ingredient ids must be provided"));
-
-
-
     }
 
 
     @Test
     public void createOrderWithIncorrectHash(){
-     //   order = order.generateOrder();
-
-        stellarburgersClient = new StellarburgersClient();
+        stellarBurgersClient = new StellarBurgersClient();
         order.setBun("111");
 
-        ValidatableResponse orderResponse  = stellarburgersClient.createOrderWithoutAuthorization(order);
+        ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutAuthorization(order);
 
         int statusCode = orderResponse.extract().statusCode();
 

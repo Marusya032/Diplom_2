@@ -10,29 +10,29 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class GetUserOrdersTest {
     User user ;
-    StellarburgersClient stellarburgersClient;
+    StellarBurgersClient stellarBurgersClient;
     String authorization;
 
     @Before
     public void setUp() {
-        stellarburgersClient = new StellarburgersClient();
+        stellarBurgersClient = new StellarBurgersClient();
     }
 
     @After
     public void tearDown() {
         if (authorization != null) {
-            stellarburgersClient.deleteUser(authorization);
+            stellarBurgersClient.deleteUser(authorization);
         }
     }
 
     @Test
     public void getOrdersAuthorizedUser(){
         user  = user.getRandom();
-        ValidatableResponse createResponse = stellarburgersClient.createNewUser(user);
+        ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
 
         authorization = createResponse.extract().body().path("accessToken");
 
-        ValidatableResponse getOrdersResponse = stellarburgersClient.getOrdersAuthorizedUser(user, authorization);
+        ValidatableResponse getOrdersResponse = stellarBurgersClient.getOrdersAuthorizedUser(user, authorization);
 
         int statusCode = getOrdersResponse.extract().statusCode();
 
@@ -42,7 +42,7 @@ public class GetUserOrdersTest {
 
     @Test
     public void getOrdersUnauthorizedUser(){
-        ValidatableResponse getOrdersResponse = stellarburgersClient.getOrdersUnauthorizedUser();
+        ValidatableResponse getOrdersResponse = stellarBurgersClient.getOrdersUnauthorizedUser();
 
         int statusCode = getOrdersResponse.extract().statusCode();
         String message = getOrdersResponse.extract().body().path("message");
