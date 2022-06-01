@@ -1,5 +1,11 @@
 import io.qameta.allure.Step;
+import io.restassured.http.ContentType;
 import io.restassured.response.ValidatableResponse;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+
 import static io.restassured.RestAssured.given;
 
 public class StellarburgersClient extends StellarburgersRestClient{
@@ -66,6 +72,108 @@ public class StellarburgersClient extends StellarburgersRestClient{
                 .body(user)
                 .when()
                 .patch(EDIT_USER_PATH)
+                .then();
+    }
+
+
+    @Step("Get ingredients list")
+    public ValidatableResponse getIngredients() {
+        return given()
+                .spec(getBaseSpec())
+                .when()
+                .get(INGREDIENTS_LIST)
+                .then();
+    }
+
+
+
+    @Step("Create order with authorization")
+    public ValidatableResponse createOrderWithAuthorization(Order order, String authorization) {
+
+
+        HashMap<String,Object> dataBody = new HashMap<String,Object>();
+        ArrayList<String> ingredients = new ArrayList<String>();
+ingredients.add(order.getBun());
+ingredients.add(order.getSouse());
+ingredients.add(order.getBun());
+
+
+        dataBody.put("ingredients", ingredients);
+
+        return given()
+                .spec(getBaseSpec())
+                .header("Authorization", authorization)
+                .contentType(ContentType.JSON)
+                .body(dataBody)
+                .when()
+                .post(ORDER_PATH)
+                .then();
+    }
+
+
+ @Step("Create order without authorization")
+    public ValidatableResponse createOrderWithoutAuthorization(Order order) {
+
+
+        HashMap<String,Object> dataBody = new HashMap<String,Object>();
+        ArrayList<String> ingredients = new ArrayList<String>();
+        ingredients.add(order.getBun());
+        ingredients.add(order.getSouse());
+        ingredients.add(order.getBun());
+
+
+        dataBody.put("ingredients", ingredients);
+
+        return given()
+                .spec(getBaseSpec())
+
+                .contentType(ContentType.JSON)
+                .body(dataBody)
+                .when()
+                .post(ORDER_PATH)
+                .then();
+    }
+
+    @Step("Create order without authorization")
+    public ValidatableResponse createOrderWithoutIngredients(Order order) {
+
+
+        HashMap<String,Object> dataBody = new HashMap<String,Object>();
+        ArrayList<String> ingredients = new ArrayList<String>();
+
+        dataBody.put("ingredients", ingredients);
+
+        return given()
+                .spec(getBaseSpec())
+
+                .contentType(ContentType.JSON)
+                .body(dataBody)
+                .when()
+                .post(ORDER_PATH)
+                .then();
+    }
+
+    @Step("Get Orders Authorized User")
+    public ValidatableResponse getOrdersAuthorizedUser(User user, String authorization) {
+
+
+        return given()
+                .spec(getBaseSpec())
+                .header("authorization", authorization)
+                .contentType(ContentType.JSON)
+
+                .when()
+                .get(ORDER_PATH)
+                .then();
+    }
+    @Step("Get Orders Unauthorized User")
+    public ValidatableResponse getOrdersUnauthorizedUser() {
+
+
+        return given()
+                .spec(getBaseSpec())
+                .when()
+                .get(ORDER_PATH)
                 .then();
     }
 
