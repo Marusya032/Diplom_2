@@ -30,7 +30,6 @@ public class CreateUserTest {
     @DisplayName("Test user can be created")
     public void userCanBeCreated(){
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
         authorization = createResponse.extract().body().path("accessToken");
@@ -46,7 +45,6 @@ public class CreateUserTest {
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
         email = createResponse.extract().body().path("user.email");
         ValidatableResponse createResponse2 = stellarBurgersClient.createNewUser(user);
-
         int statusCode = createResponse2.extract().statusCode();
         boolean errorStatus = createResponse2.extract().body().path("success");
         String message = createResponse2.extract().body().path("message");
@@ -61,7 +59,6 @@ public class CreateUserTest {
     public void createUserWithoutRequiredFieldEmail(){
         user.setEmail("");
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
@@ -76,7 +73,6 @@ public class CreateUserTest {
     public void createUserWithoutRequiredFieldPassword(){
         user.setPassword("");
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
@@ -91,7 +87,6 @@ public class CreateUserTest {
     public void createUserWithoutRequiredFieldName(){
         user.setName("");
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
@@ -99,6 +94,5 @@ public class CreateUserTest {
         assertThat("Неверный код ответа", statusCode, equalTo(SC_FORBIDDEN));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
         assertThat("Неверный текст сообщения", message, equalTo("Email, password and name are required fields"));
-
     }
 }

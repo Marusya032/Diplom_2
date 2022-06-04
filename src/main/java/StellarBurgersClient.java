@@ -36,7 +36,7 @@ public class StellarBurgersClient extends StellarBurgersRestClient{
     }
 
     @Step("Login user")
-    public ValidatableResponse loginUser(UserCredentials user) {
+    public ValidatableResponse loginUser(User user) {
 
         return given()
                 .spec(getBaseSpec())

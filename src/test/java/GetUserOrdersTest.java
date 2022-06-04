@@ -2,7 +2,6 @@ import io.restassured.response.ValidatableResponse;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-
 import static org.apache.http.HttpStatus.SC_OK;
 import static org.apache.http.HttpStatus.SC_UNAUTHORIZED;
 import static org.hamcrest.MatcherAssert.assertThat;
@@ -28,22 +27,16 @@ public class GetUserOrdersTest {
     @Test
     public void getOrdersAuthorizedUser(){
         user  = user.getRandom();
-        ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-
-        authorization = createResponse.extract().body().path("accessToken");
-
+        authorization = stellarBurgersClient.createNewUser(user).extract().body().path("accessToken");
         ValidatableResponse getOrdersResponse = stellarBurgersClient.getOrdersAuthorizedUser(user, authorization);
-
         int statusCode = getOrdersResponse.extract().statusCode();
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_OK));
-
     }
 
     @Test
     public void getOrdersUnauthorizedUser(){
         ValidatableResponse getOrdersResponse = stellarBurgersClient.getOrdersUnauthorizedUser();
-
         int statusCode = getOrdersResponse.extract().statusCode();
         String message = getOrdersResponse.extract().body().path("message");
 

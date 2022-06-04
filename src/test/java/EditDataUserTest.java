@@ -12,18 +12,14 @@ import static org.hamcrest.Matchers.equalTo;
 
 public class EditDataUserTest {
     User user;
-    UserCredentials userCredentials;
     StellarBurgersClient stellarBurgersClient;
     String authorization;
-    String email;
-    ValidatableResponse createResponse;
 
     @Before
     public void setUp() {
         stellarBurgersClient = new StellarBurgersClient();
         user  = user.getRandom();
-        ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-        authorization = createResponse.extract().body().path("accessToken");
+        authorization = stellarBurgersClient.createNewUser(user).extract().body().path("accessToken");
     }
 
     @After
@@ -35,9 +31,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Name With Authorization")
     public void editFieldNameWithAuthorization(){
-        user.setName(RandomStringUtils.randomAlphabetic(10));
+        user.setName("test_qajava5");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithAuthorization(user, authorization);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String newName = editResponse.extract().body().path("user.name");
@@ -50,9 +45,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Email With Authorization")
     public void editFieldEmailWithAuthorization(){
-        user.setEmail(RandomStringUtils.randomAlphabetic(10) + "@mail.ru");
+        user.setEmail("test_qajava5@mail.ru");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithAuthorization(user, authorization);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String newEmail = editResponse.extract().body().path("user.email");
@@ -65,9 +59,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Password With Authorization")
     public void editFieldPasswordWithAuthorization(){
-        user.setPassword(RandomStringUtils.randomAlphabetic(10));
+        user.setPassword("55555555");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithAuthorization(user, authorization);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
 
@@ -78,15 +71,9 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Email an Exiting Email")
     public void editFieldEmailAnExitingEmail(){
-        stellarBurgersClient = new StellarBurgersClient();
-        user  = user.getRandom();
-        ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
-        String authorization = createResponse.extract().body().path("accessToken");
-
         User user2   = user.getRandom();
-        ValidatableResponse createResponse2 = stellarBurgersClient.createNewUser(user2);
+        stellarBurgersClient.createNewUser(user2);
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithAuthorization(user2, authorization);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String message = editResponse.extract().body().path("message");
@@ -99,9 +86,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Name Without Authorization")
     public void editFieldNameWithoutAuthorization(){
-        user.setName(RandomStringUtils.randomAlphabetic(10));
+        user.setName("test_qajava5");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithoutAuthorization(user);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String message = editResponse.extract().body().path("message");
@@ -114,9 +100,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Email Without Authorization")
     public void editFieldEmailWithoutAuthorization(){
-        user.setEmail(RandomStringUtils.randomAlphabetic(10) + "@mail.ru");
+        user.setEmail("test_qajava5@mail.ru");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithoutAuthorization(user);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String message = editResponse.extract().body().path("message");
@@ -129,9 +114,8 @@ public class EditDataUserTest {
     @Test
     @DisplayName("Edit field Password Without Authorization")
     public void editFieldPasswordWithoutAuthorization(){
-        user.setPassword(RandomStringUtils.randomAlphabetic(10));
+        user.setPassword("55555555");
         ValidatableResponse editResponse = stellarBurgersClient.editUserWithoutAuthorization(user);
-
         int statusCode = editResponse.extract().statusCode();
         boolean errorStatus = editResponse.extract().body().path("success");
         String message = editResponse.extract().body().path("message");

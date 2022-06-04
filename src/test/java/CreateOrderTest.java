@@ -18,6 +18,7 @@ public class CreateOrderTest {
 
     @Before
     public void setUp() {
+        stellarBurgersClient = new StellarBurgersClient();
         order = order.generateOrder();
     }
 
@@ -30,15 +31,10 @@ public class CreateOrderTest {
     
     @Test
     public void createOrderWithAuthorization(){
-        stellarBurgersClient = new StellarBurgersClient();
         user  =  user.getRandom();
-
-        StellarBurgersClient stellarburgersClient = new StellarBurgersClient();
-        ValidatableResponse orderResponse = stellarburgersClient.createNewUser(user);
+        ValidatableResponse orderResponse = stellarBurgersClient.createNewUser(user);
         authorization = orderResponse.extract().body().path("accessToken");
-
-        ValidatableResponse createOrder  = stellarburgersClient.createOrderWithAuthorization(order, authorization);
-
+        ValidatableResponse createOrder  = stellarBurgersClient.createOrderWithAuthorization(order, authorization);
         int statusCode = orderResponse.extract().statusCode();
         boolean errorStatus = orderResponse.extract().body().path("success");
 
@@ -48,10 +44,7 @@ public class CreateOrderTest {
 
     @Test
     public void createOrderWithoutAuthorization(){
-        stellarBurgersClient = new StellarBurgersClient();
-
         ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutAuthorization(order);
-
         int statusCode = orderResponse.extract().statusCode();
         boolean errorStatus = orderResponse.extract().body().path("success");
 
@@ -61,10 +54,7 @@ public class CreateOrderTest {
 
     @Test
     public void createOrderWithoutIngredients(){
-        stellarBurgersClient = new StellarBurgersClient();
-
         ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutIngredients(order);
-
         int statusCode = orderResponse.extract().statusCode();
         boolean errorStatus = orderResponse.extract().body().path("success");
         String message = orderResponse.extract().body().path("message");
@@ -77,14 +67,10 @@ public class CreateOrderTest {
 
     @Test
     public void createOrderWithIncorrectHash(){
-        stellarBurgersClient = new StellarBurgersClient();
         order.setBun("111");
-
         ValidatableResponse orderResponse  = stellarBurgersClient.createOrderWithoutAuthorization(order);
-
         int statusCode = orderResponse.extract().statusCode();
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_INTERNAL_SERVER_ERROR));
-
     }
 }
