@@ -26,7 +26,8 @@ public class EditDataUserTest {
     public void TearDown() {
         if (authorization != null) {
             stellarBurgersClient.deleteUser(authorization);
-        }}
+        }
+    }
 
     @Test
     @DisplayName("Edit field Name With Authorization")
