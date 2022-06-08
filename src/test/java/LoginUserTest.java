@@ -21,7 +21,7 @@ public class LoginUserTest {
     }
 
     @After
-    public void TearDown() {
+    public void tearDown() {
         if (authorization != null) {
             stellarBurgersClient.deleteUser(authorization);
         }}

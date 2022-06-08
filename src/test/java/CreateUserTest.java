@@ -12,6 +12,7 @@ public class CreateUserTest {
     User user;
     StellarBurgersClient stellarBurgersClient;
     String authorization;
+    String authorization2;
     String email;
 
     @Before
@@ -21,10 +22,14 @@ public class CreateUserTest {
     }
 
     @After
-    public void TearDown() {
+    public void tearDown() {
         if (authorization != null) {
           stellarBurgersClient.deleteUser(authorization);
-    }}
+    }
+        if (authorization2 != null) {
+            stellarBurgersClient.deleteUser(authorization2);
+        }
+    }
 
     @Test
     @DisplayName("Test user can be created")
@@ -44,10 +49,16 @@ public class CreateUserTest {
     public void cannotCreateAnExitingUser(){
         ValidatableResponse createResponse = stellarBurgersClient.createNewUser(user);
         email = createResponse.extract().body().path("user.email");
+        authorization = createResponse.extract().body().path("accessToken");
+
         ValidatableResponse createResponse2 = stellarBurgersClient.createNewUser(user);
         int statusCode = createResponse2.extract().statusCode();
         boolean errorStatus = createResponse2.extract().body().path("success");
         String message = createResponse2.extract().body().path("message");
+
+        if (statusCode == 200) {
+            authorization2 = createResponse2.extract().body().path("accessToken");
+        }
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_FORBIDDEN));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
@@ -63,6 +74,10 @@ public class CreateUserTest {
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
 
+        if (statusCode == 200) {
+            authorization = createResponse.extract().body().path("accessToken");
+        }
+
         assertThat("Неверный код ответа", statusCode, equalTo(SC_FORBIDDEN));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
         assertThat("Неверный текст сообщения", message, equalTo("Email, password and name are required fields"));
@@ -77,6 +92,10 @@ public class CreateUserTest {
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
 
+        if (statusCode == 200) {
+            authorization = createResponse.extract().body().path("accessToken");
+        }
+
         assertThat("Неверный код ответа", statusCode, equalTo(SC_FORBIDDEN));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
         assertThat("Неверный текст сообщения", message, equalTo("Email, password and name are required fields"));
@@ -90,6 +109,10 @@ public class CreateUserTest {
         int statusCode = createResponse.extract().statusCode();
         boolean errorStatus = createResponse.extract().body().path("success");
         String message = createResponse.extract().body().path("message");
+
+        if (statusCode == 200) {
+            authorization = createResponse.extract().body().path("accessToken");
+        }
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_FORBIDDEN));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
