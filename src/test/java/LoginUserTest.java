@@ -47,6 +47,10 @@ public class LoginUserTest {
         boolean errorStatus = loginResponse.extract().body().path("success");
         String message = loginResponse.extract().body().path("message");
 
+        if (statusCode == 200) {
+            authorization = loginResponse.extract().body().path("accessToken");
+        }
+
         assertThat("Неверный код ответа", statusCode, equalTo(SC_UNAUTHORIZED));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
         assertThat("Неверный текст сообщения", message, equalTo("email or password are incorrect"));
@@ -60,6 +64,10 @@ public class LoginUserTest {
         int statusCode = loginResponse.extract().statusCode();
         boolean errorStatus = loginResponse.extract().body().path("success");
         String message = loginResponse.extract().body().path("message");
+
+        if (statusCode == 200) {
+            authorization = loginResponse.extract().body().path("accessToken");
+        }
 
         assertThat("Неверный код ответа", statusCode, equalTo(SC_UNAUTHORIZED));
         assertThat("Неверный статус ответа", errorStatus, equalTo(false));
