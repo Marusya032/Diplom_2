@@ -42,4 +42,5 @@ public class User {
 
         return new User(name, email, password);
     }
+
 }
